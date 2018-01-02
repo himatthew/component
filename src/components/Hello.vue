@@ -79,7 +79,7 @@
                 //当前星期，周日是0
                 var day = date_base.getDay();
                 //当前月的第一天是数组中的第几个条目
-                var arr_month_first = this.day1first ? ( day0 == 0 ? 7 : day0 )
+                var arr_month_first = this.day1first ? ( day0 == 0 ? 7 : day0 ) : day0 +1;
 
             },
         }
