@@ -78,8 +78,69 @@
                 var date = date_base.getDate();
                 //当前星期，周日是0
                 var day = date_base.getDay();
+                //当前月的第一天是星期几
+                var day0 = (this.get_date(year + " " + month + "-1")).getDay()
                 //当前月的第一天是数组中的第几个条目
-                var arr_month_first = this.day1first ? ( day0 == 0 ? 7 : day0 ) : day0 +1;
+                var arr_month_first = this.day1first ? ( day0 == 0 ? 7 : day0 ) : day0 + 1;
+                //当前月有多少天
+                var arr_days_count_now = this.get_month_days(year,month);
+                //上个年份
+                var pre_year = month == 1 ? year - 1 : year;
+                //上个月份
+                var pre_month = month == 1 ? 12 : month - 1 ;
+                //下个年份
+                var next_year = month == 12 ? year + 1 : year ;
+                //下个月份
+                var next_month = month == 12 ? 1 : month + 1;
+
+                //更新缓存数据
+                this.date_show = data_base;
+                this.date_show_pre = this.get_date(pre_year + " " + pre_month + "-1");
+                this.date_show_next = this.get_date(next_year + " " + next_month + "-1");
+                this.date_show_pre_year = this.get_date( (year - 1) + " " + month + "-1");
+                this.date_show_next_year = this.get_date( (year + 1) + " " + month + "-1");
+
+                //上一个月有几天
+                var days_pre = this.get_month_days(pre_years ,pre_month );
+                //数组中还可以显示上个月的天数
+                var arr_days_count_pre = arr_days_count_now - arr_month_first + 1;
+                //进行数组处理
+                var show_days = [];
+                for(var i = 0 ,j = arr_days_count_pre; i < j ; ++i){
+                    show_days.push({
+                        v : days_pre - j + i + 1,
+                        year : pre_year,
+                        //当前条目显示为上一个月
+                        is_pre : true
+                    })
+                }
+
+                for(var i = 0, j = arr_days_count_now; i < j; ++i){
+                    show_days.push({
+                        v : i +_1,
+                        year : year,
+                        month : month,
+                        //当前条目显示为当前月
+                        is_base : true
+                    })
+                }
+
+                for(var i = 0, j = arr_days_count_next; i < j; ++1){
+                    show_days.push({
+                        v : i + 1,
+                        year : next_year,
+                        month : next_month,
+                        //当前条目显示为下一个月
+                        is_next : true
+                    })
+                }
+
+                //更多信息添加
+                for(var i = 0, j = show_days.length; i < j; ++i){
+                    var show_daysi = show_days[i];
+                    show_daysi.now = (show_daysi.v == now_date && now_year == show_daysi.year && now_month == show_daysi.month) ? true : false;
+                    show_daysi.before = ((now_year > show_daysi.year) || (now_year == show_daysi))
+                }
 
             },
         }
